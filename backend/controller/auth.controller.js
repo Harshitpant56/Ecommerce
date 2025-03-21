@@ -2,7 +2,7 @@ import { redis } from "../lib/redis.js";
 import User from "../models/user_model.js";
 import jwt from "jsonwebtoken";
 
-const seven_day = 7 * 24 * 60 * 60
+const seven_day = 8 * 24 * 60 * 60
 
 const generateTokens = (userId) => {
   const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET, {
