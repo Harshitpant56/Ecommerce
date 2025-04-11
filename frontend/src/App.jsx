@@ -8,12 +8,20 @@ import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import AdminPage from "./pages/AdminPage";
+import CategoryPage from "./pages/CategoryPage";
+import CartPage from "./pages/CartPage";
+import { useCartStore } from "./stores/useCartStore";
 
 function App() {
   const { user, checkAuth, checkingAuth } = useUserStore();
+  const {getCartItem} =useCartStore()
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
+  useEffect(()=>{
+    getCartItem()
+  },[getCartItem])
 
   if (checkingAuth) return <LoadingSpinner />;
   return (
@@ -28,15 +36,17 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
-            path="/SignUpPage"
+            path="/signup"
             element={!user ? <SignUpPage /> : <Navigate to="/" />}
           />
           <Route
-            path="/LoginPage"
+            path="/login"
             element={!user ? <LoginPage /> : <Navigate to="/" />}
           />
-          <Route path='secret-dashboard' element={user?.role==='admin' ? <AdminPage/>:<Navigate to="/LoginPage"/>}
+          <Route path='/secret-dashboard' element={user?.role==='admin' ? <AdminPage/>:<Navigate to="/login"/>}
           /> 
+         <Route path='/category/:category' element={<CategoryPage />} />
+         <Route path="/cart" element={user ? <CartPage/>:<Navigate to="/login"/>}/>
         </Routes>
       </div>
       <Toaster />
